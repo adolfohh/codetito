@@ -1,0 +1,162 @@
+{
+    "asset": {
+        "generator": "SOLIDWORKSGLTF",
+        "version": "2.0"
+    },
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Predeterminado",
+            "nodes": [
+                0,
+                1
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "matrix": [
+                0.9859806823023071,
+                -0.039689439207202984,
+                0.1620704863387992,
+                0.0,
+                0.027768741339423333,
+                0.9967842332066673,
+                0.07516707680241684,
+                0.0,
+                -0.1645326445757843,
+                -0.06961279225842021,
+                0.9839121241365434,
+                0.0,
+                -0.09596510586612331,
+                0.019571437964287855,
+                0.5938753631485619,
+                1.0
+            ],
+            "camera": 0,
+            "name": "current camera"
+        },
+        {
+            "mesh": 0,
+            "name": "Pieza221"
+        }
+    ],
+    "cameras": [
+        {
+            "type": "orthographic",
+            "orthographic": {
+                "xmag": 0.1472719114554428,
+                "ymag": 0.1138010224882967,
+                "zfar": 0.7420543194770075,
+                "znear": 0.5038609767180644
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 1,
+                        "NORMAL": 2
+                    },
+                    "indices": 0,
+                    "material": 0,
+                    "mode": 4
+                }
+            ]
+        }
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 16071,
+            "type": "SCALAR",
+            "min": [
+                0
+            ],
+            "max": [
+                7224
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 7225,
+            "type": "VEC3",
+            "min": [
+                -0.040698837488889694,
+                -0.004999999888241291,
+                0.0
+            ],
+            "max": [
+                0.040698837488889694,
+                0.125,
+                0.03999999910593033
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 7225,
+            "type": "VEC3",
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "materials": [
+        {
+            "name": "blacklowglossplastic",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.0065849575776965145,
+                    0.0065849575776965145,
+                    0.0065849575776965145,
+                    1.0
+                ],
+                "metallicFactor": 0.0,
+                "roughnessFactor": 0.699999988079071
+            }
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 64284,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 64284,
+            "byteLength": 86700,
+            "byteStride": 12,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 150984,
+            "byteLength": 86700,
+            "byteStride": 12,
+            "target": 34962
+        }
+    ],
+    "buffers": [
+        {
+            "uri": "Pieza221.bin",
+            "byteLength": 237684
+        }
+    ]
+}
