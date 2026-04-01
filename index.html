@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Brain Dump Pro - Tu espacio de paz mental</title>
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 16px;
+            transition: background 0.3s;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+            transition: background 0.3s;
+        }
+
+        body.dark-mode .container {
+            background: #1a1a2e;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Grid para Timer y Calculadora */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 16px;
+            background: #f8f9fa;
+        }
+
+        body.dark-mode .tools-grid {
+            background: #16213e;
+        }
+
+        @media (max-width: 600px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Estilos del cronómetro */
+        .timer-section, .calculator-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .calculator-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body.dark-mode .timer-section {
+            background: linear-gradient(135deg, #6a3093 0%, #a044ff 100%);
+        }
+
+        body.dark-mode .calculator-section {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
+        }
+
+        .timer-display {
+            font-size: 3em;
+            font-weight: bold;
+            font-family: monospace;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+        }
+
+        .timer-controls, .calc-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn, .calc-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .timer-btn:hover, .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .timer-presets {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .timer-status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Calculadora */
+        .calc-display {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .calc-display input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2em;
+            text-align: right;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .calc-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px;
+            font-size: 1.2em;
+        }
+
+        .calc-btn.operator {
+            background: #ff9800;
+        }
+
+        .calc-btn.equals {
+            background: #4caf50;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear {
+            background: #f44336;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        body.dark-mode .stats {
+            background: #16213e;
+            border-color: #0f3460;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 10px;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .input-section {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .category-selector {
+            margin-top: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #noteCategory {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s, opacity 0.2s;
+            font-weight: 500;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .search-section {
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-badge {
+            padding: 4px 12px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .category-badge.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .notes-container {
+            padding: 20px;
+            display: grid;
+            gap: 16px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .note-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .note-category {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .category-idea { background: #e3f2fd; color: #1976d2; }
+        .category-task { background: #e8f5e8; color: #388e3c; }
+        .category-note { background: #fff3e0; color: #f57c00; }
+        .category-urgent { background: #ffebee; color: #d32f2f; }
+        .category-personal { background: #f3e5f5; color: #7b1fa2; }
+        .category-work { background: #e0f2f1; color: #00796b; }
+
+        .note-content {
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+            padding-top: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 4px 12px;
+            font-size: 11px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .reminder-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reminder-content {
+            background: white;
+            padding: 24px;
+            border-radius: 24px;
+            max-width: 90%;
+            width: 320px;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: #6c757d;
+            background: #f8f9fa;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timer-finished {
+            animation: pulse 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Brain Dump Pro</h1>
+            <p>Vacía tu mente | Organiza tus ideas | Encuentra tu paz</p>
+        </header>
+
+        <!-- Grid de herramientas: Timer + Calculadora -->
+        <div class="tools-grid">
+            <!-- Cronómetro -->
+            <div class="timer-section" id="timerSection">
+                <div class="timer-display" id="timerDisplay">05:00</div>
+                <div class="timer-controls">
+                    <button id="startTimer" class="timer-btn" style="background: #28a745;">▶ Iniciar</button>
+                    <button id="pauseTimer" class="timer-btn" style="background: #ffc107;">⏸ Pausar</button>
+                    <button id="resetTimer" class="timer-btn" style="background: #dc3545;">🔄 Reiniciar</button>
+                </div>
+                <div class="timer-presets">
+                    <button class="preset-btn" data-minutes="5">5 min</button>
+                    <button class="preset-btn" data-minutes="7">7 min</button>
+                    <button class="preset-btn" data-minutes="10">10 min</button>
+                </div>
+                <div class="timer-status" id="timerStatus">⚡ Listo para escribir</div>
+            </div>
+
+            <!-- Calculadora -->
+            <div class="calculator-section">
+                <div class="calc-display">
+                    <input type="text" id="calcInput" readonly value="0">
+                </div>
+                <div class="calc-buttons">
+                    <button class="calc-btn clear" onclick="clearCalc()">C</button>
+                    <button class="calc-btn" onclick="appendToCalc('7')">7</button>
+                    <button class="calc-btn" onclick="appendToCalc('8')">8</button>
+                    <button class="calc-btn" onclick="appendToCalc('9')">9</button>
+                    <button class="calc-btn operator" onclick="appendToCalc('/')">÷</button>
+                    <button class="calc-btn" onclick="appendToCalc('4')">4</button>
+                    <button class="calc-btn" onclick="appendToCalc('5')">5</button>
+                    <button class="calc-btn" onclick="appendToCalc('6')">6</button>
+                    <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+                    <button class="calc-btn" onclick="appendToCalc('1')">1</button>
+                    <button class="calc-btn" onclick="appendToCalc('2')">2</button>
+                    <button class="calc-btn" onclick="appendToCalc('3')">3</button>
+                    <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+                    <button class="calc-btn" onclick="appendToCalc('0')">0</button>
+                    <button class="calc-btn" onclick="appendToCalc('.')">.</button>
+                    <button class="calc-btn equals" onclick="calculateResult()">=</button>
+                    <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card"><span class="stat-number" id="totalNotes">0</span><span>Notas totales</span></div>
+            <div class="stat-card"><span class="stat-number" id="todayNotes">0</span><span>Notas hoy</span></div>
+            <div class="stat-card"><span class="stat-number" id="sessionsCount">0</span><span>Sesiones</span></div>
+        </div>
+
+        <div class="export-buttons">
+            <button id="exportTXT" class="btn-export">📄 Exportar TXT</button>
+            <button id="exportJSON" class="btn-export">📊 Exportar JSON</button>
+            <button id="importJSON" class="btn-export">📂 Importar</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+
+        <div class="input-section">
+            <textarea id="noteInput" placeholder="✍️ Escribe todo lo que pasa por tu mente... ¡Sin filtros, sin juicios!" rows="4"></textarea>
+            <div class="input-actions">
+                <button id="saveNote" class="btn-primary">💾 Guardar Dump</button>
+                <button id="clearInput" class="btn-secondary">🗑️ Limpiar</button>
+            </div>
+            <div class="category-selector">
+                <select id="noteCategory">
+                    <option value="idea">💡 Idea</option>
+                    <option value="task">✅ Tarea</option>
+                    <option value="note" selected>📝 Nota</option>
+                    <option value="urgent">⚠️ Urgente</option>
+                    <option value="personal">❤️ Personal</option>
+                    <option value="work">💼 Trabajo</option>
+                </select>
+                <button id="showReminderDialog" class="btn-secondary" style="background:#ff9800;">⏰ Recordatorio</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">📅 Todas</button>
+            <button class="filter-btn" data-filter="today">📆 Hoy</button>
+            <button class="filter-btn" data-filter="week">📊 Semana</button>
+            <button class="filter-btn" data-filter="month">📈 Mes</button>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar en tus notas..." class="search-input">
+            <div class="categories">
+                <span class="category-badge" data-category="idea">💡 Idea</span>
+                <span class="category-badge" data-category="task">✅ Tarea</span>
+                <span class="category-badge" data-category="note">📝 Nota</span>
+                <span class="category-badge" data-category="urgent">⚠️ Urgente</span>
+                <span class="category-badge" data-category="personal">❤️ Personal</span>
+                <span class="category-badge" data-category="work">💼 Trabajo</span>
+            </div>
+        </div>
+
+        <div class="notes-container" id="notesContainer"></div>
+        <div class="footer-note">
+            💾 Tus notas se guardan SOLO en este dispositivo. Exporta para respaldar.
+        </div>
+    </div>
+
+    <div id="reminderModal" class="reminder-modal">
+        <div class="reminder-content">
+            <h3>⏰ Recordatorio diario</h3>
+            <input type="time" id="reminderTime">
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="setReminder" class="btn-primary">Guardar</button>
+                <button id="closeReminderModal" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calculadora
+        function appendToCalc(value) {
+            const input = document.getElementById('calcInput');
+            if (input.value === '0' && value !== '.') {
+                input.value = value;
+            } else {
+                input.value += value;
+            }
+        }
+
+        function clearCalc() {
+            document.getElementById('calcInput').value = '0';
+        }
+
+        function calculateResult() {
+            const input = document.getElementById('calcInput');
+            try {
+                let expression = input.value.replace(/×/g, '*').replace(/÷/g, '/');
+                const result = eval(expression);
+                input.value = result;
+            } catch(e) {
+                input.value = 'Error';
+                setTimeout(() => input.value = '0', 1000);
+            }
+        }
+
+        // Brain Dump Class
+        class BrainDump {
+            constructor() {
+                this.notes = this.loadNotes();
+                this.currentFilter = 'all';
+                this.currentCategory = null;
+                this.searchTerm = '';
+                this.sessions = this.loadSessions();
+                this.init();
+                this.initReminder();
+                this.initTimer();
+            }
+
+            loadNotes() {
+                const stored = localStorage.getItem('brainDumpNotes');
+                return stored ? JSON.parse(stored) : [];
+            }
+
+            loadSessions() {
+                const stored = localStorage.getItem('brainDumpSessions');
+                return stored ? JSON.parse(stored) : 0;
+            }
+
+            saveSessions() {
+                localStorage.setItem('brainDumpSessions', JSON.stringify(this.sessions));
+                document.getElementById('sessionsCount').textContent = this.sessions;
+            }
+
+            saveNotes() {
+                localStorage.setItem('brainDumpNotes', JSON.stringify(this.notes));
+                this.updateStats();
+                this.renderNotes();
+            }
+
+            addNote(content, category) {
+                if (!content.trim()) return false;
+                const note = {
+                    id: Date.now(),
+                    content: content.trim(),
+                    category: category,
+                    date: new Date().toISOString(),
+                    formattedDate: new Date().toLocaleString('es-ES')
+                };
+                this.notes.unshift(note);
+                this.saveNotes();
+                return true;
+            }
+
+            deleteNote(id) {
+                if (confirm('¿Eliminar esta nota?')) {
+                    this.notes = this.notes.filter(n => n.id !== id);
+                    this.saveNotes();
+                }
+            }
+
+            filterNotes() {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                return this.notes.filter(note => {
+                    let dateMatch = true;
+                    const noteDate = new Date(note.date);
+                    switch(this.currentFilter) {
+                        case 'today':
+                            dateMatch = new Date(noteDate.getFullYear(), noteDate.getMonth(), noteDate.getDate()).getTime() === today.getTime();
+                            break;
+                        case 'week':
+                            dateMatch = noteDate >= new Date(now.setDate(now.getDate() - 7));
+                            break;
+                        case 'month':
+                            dateMatch = noteDate >= new Date(now.setMonth(now.getMonth() - 1));
+                            break;
+                    }
+                    let categoryMatch = !this.currentCategory || note.category === this.currentCategory;
+                    let searchMatch = !this.searchTerm || note.content.toLowerCase().includes(this.searchTerm.toLowerCase());
+                    return dateMatch && categoryMatch && searchMatch;
+                });
+            }
+
+            updateStats() {
+                document.getElementById('totalNotes').textContent = this.notes.length;
+                const today = this.notes.filter(n => {
+                    const nDate = new Date(n.date);
+                    const todayDate = new Date();
+                    return nDate.toDateString() === todayDate.toDateString();
+                }).length;
+                document.getElementById('todayNotes').textContent = today;
+            }
+
+            renderNotes() {
+                const container = document.getElementById('notesContainer');
+                const filtered = this.filterNotes();
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><div style="font-size:48px;">🧠</div><p>Sin notas</p><small>¡Escribe algo!</small></div>`;
+                    return;
+                }
+                container.innerHTML = filtered.map(note => `
+                    <div class="note-card">
+                        <div class="note-category category-${note.category}">${this.getIcon(note.category)} ${note.category.toUpperCase()}</div>
+                        <div class="note-content">${this.escapeHtml(note.content)}</div>
+                        <div class="note-meta">
+                            <span>📅 ${note.formattedDate}</span>
+                            <button class="delete-btn" onclick="brainDump.deleteNote(${note.id})">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            getIcon(cat) {
+                const icons = { idea:'💡', task:'✅', note:'📝', urgent:'⚠️', personal:'❤️', work:'💼' };
+                return icons[cat] || '📌';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            exportToTXT() {
+                let content = `BRAIN DUMP - ${new Date().toLocaleString()}\nTotal: ${this.notes.length} notas | Sesiones: ${this.sessions}\n${'='.repeat(50)}\n\n`;
+                this.notes.forEach((n, i) => {
+                    content += `[${i+1}] ${n.formattedDate} [${n.category}]\n${n.content}\n${'-'.repeat(30)}\n\n`;
+                });
+                this.downloadFile(content, 'brain-dump.txt', 'text/plain');
+            }
+
+            exportToJSON() {
+                const data = { exportDate: new Date().toISOString(), totalNotes: this.notes.length, sessions: this.sessions, notes: this.notes };
+                this.downloadFile(JSON.stringify(data, null, 2), 'brain-dump.json', 'application/json');
+            }
+
+            downloadFile(content, filename, type) {
+                const blob = new Blob([content], { type });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }
+
+            importFromJSON(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (data.notes && Array.isArray(data.notes)) {
+                            if (confirm(`Importar ${data.notes.length} notas?`)) {
+                                this.notes = [...data.notes, ...this.notes];
+                                this.saveNotes();
+                                alert('✅ Importado!');
+                            }
+                        } else alert('Formato inválido');
+                    } catch(e) { alert('Error al leer archivo'); }
+                };
+                reader.readAsText(file);
+            }
+
+            initReminder() {
+                const time = localStorage.getItem('reminderTime');
+                if (time) this.setReminder(time);
+                document.getElementById('showReminderDialog').onclick = () => document.getElementById('reminderModal').style.display = 'flex';
+                document.getElementById('closeReminderModal').onclick = () => document.getElementById('reminderModal').style.display = 'none';
+                document.getElementById('setReminder').onclick = () => {
+                    const t = document.getElementById('reminderTime').value;
+                    if (t) {
+                        localStorage.setItem('reminderTime', t);
+                        alert(`Recordatorio a las ${t}`);
+                        document.getElementById('reminderModal').style.display = 'none';
+                        this.setReminder(t);
+                    }
+                };
+            }
+
+            setReminder(targetTime) {
+                const now = new Date();
+                const target = new Date();
+                const [h, m] = targetTime.split(':');
+                target.setHours(h, m, 0);
+                const diff = target - now;
+                if (diff > 0 && diff < 86400000) {
+                    setTimeout(() => {
+                        if (confirm('📝 ¡Hora de Brain Dump! ¿Escribir ahora?')) {
+                            document.getElementById('noteInput').focus();
+                        }
+                    }, diff);
+                }
+            }
+
+            initTimer() {
+                let timeLeft = 300, interval = null;
+                const display = document.getElementById('timerDisplay');
+                const status = document.getElementById('timerStatus');
+                const section = document.getElementById('timerSection');
+
+                const update = () => {
+                    const m = Math.floor(timeLeft / 60);
+                    const s = timeLeft % 60;
+                    display.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                };
+
+                const complete = () => {
+                    if (interval) clearInterval(interval);
+                    interval = null;
+                    status.textContent = '🎉 ¡Sesión completada! 🎉';
+                    section.classList.add('timer-finished');
+                    this.sessions++;
+                    this.saveSessions();
+                    if (navigator.vibrate) navigator.vibrate([200,100,200]);
+                    setTimeout(() => section.classList.remove('timer-finished'), 3000);
+                    alert('🎉 ¡Buen trabajo! Has completado tu Brain Dump');
+                };
+
+                document.getElementById('startTimer').onclick = () => {
+                    if (interval) return;
+                    if (timeLeft <= 0) timeLeft = 300;
+                    interval = setInterval(() => {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            update();
+                            status.textContent = `⏱️ Escribiendo... ${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}`;
+                            if (timeLeft === 0) complete();
+                        }
+                    }, 1000);
+                };
+                document.getElementById('pauseTimer').onclick = () => {
+                    if (interval) clearInterval(interval);
+                    interval = null;
+                    status.textContent = '⏸️ Pausado';
+                };
+                document.getElementById('resetTimer').onclick = () => {
+                    if (interval) clearInterval(interval);
+                    interval = null;
+                    timeLeft = 300;
+                    update();
+                    status.textContent = '⚡ Listo';
+                    section.classList.remove('timer-finished');
+                };
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.onclick = () => {
+                        const mins = parseInt(btn.dataset.minutes);
+                        if (interval) clearInterval(interval);
+                        interval = null;
+                        timeLeft = mins * 60;
+                        update();
+                        status.textContent = `🎯 ${mins} minutos - ¡a escribir!`;
+                    };
+                });
+                update();
+            }
+
+            init() {
+                document.getElementById('saveNote').onclick = () => {
+                    const input = document.getElementById('noteInput');
+                    const cat = document.getElementById('noteCategory').value;
+                    if (this.addNote(input.value, cat)) {
+                        input.value = '';
+                        input.focus();
+                    } else alert('✍️ Escribe algo primero');
+                };
+                document.getElementById('clearInput').onclick = () => {
+                    document.getElementById('noteInput').value = '';
+                    document.getElementById('noteInput').focus();
+                };
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.onclick = () => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFilter = btn.dataset.filter;
+                        this.renderNotes();
+                    };
+                });
+                document.querySelectorAll('.category-badge').forEach(badge => {
+                    badge.onclick = () => {
+                        if (this.currentCategory === badge.dataset.category) {
+                            this.currentCategory = null;
+                            badge.classList.remove('active');
+                        } else {
+                            document.querySelectorAll('.category-badge').forEach(b => b.classList.remove('active'));
+                            this.currentCategory = badge.dataset.category;
+                            badge.classList.add('active');
+                        }
+                        this.renderNotes();
+                    };
+                });
+                document.getElementById('searchInput').oninput = (e) => {
+                    this.searchTerm = e.target.value;
+                    this.renderNotes();
+                };
+                document.getElementById('exportTXT').onclick = () => this.exportToTXT();
+                document.getElementById('exportJSON').onclick = () => this.exportToJSON();
+                document.getElementById('importJSON').onclick = () => document.getElementById('importFile').click();
+                document.getElementById('importFile').onchange = (e) => {
+                    if (e.target.files[0]) this.importFromJSON(e.target.files[0]);
+                    e.target.value = '';
+                };
+                document.getElementById('noteInput').onkeydown = (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') document.getElementById('saveNote').click();
+                };
+                this.renderNotes();
+                this.saveSessions();
+            }
+        }
+
+        // Modo oscuro
+        const darkToggle = document.createElement('button');
+        darkToggle.textContent = '🌙';
+        darkToggle.className = 'dark-mode-toggle';
+        darkToggle.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            darkToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        };
+        document.body.appendChild(darkToggle);
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkToggle.textContent = '☀️';
+        }
+
+        const brainDump = new BrainDump();
+    </script>
+</body>
+</html>
